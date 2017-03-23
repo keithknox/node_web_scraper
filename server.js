@@ -24,9 +24,14 @@ app.get('/scrape', function(req, res){
       $('.header').filter(function(){
         //grabbing some data
         var data = $(this);
-        //found the title location
+
+        //found the title location on the page
         title = data.children().first().text();
-        //sending it over to our title variable
+
+        //found the release location on the page
+        release = data.children().last
+
+        //sending our info to our variables
         json.title = title;
       })
     }
