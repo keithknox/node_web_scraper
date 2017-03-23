@@ -20,7 +20,7 @@ app.get('/scrape', function(req, res){
       var title, release, rating;
       var json = { title: "", release: "", rating: "" };
 
-      //locating the header for the title and sending it to cheerio
+      //locating title and release and sending it to cheerio
       $('.header').filter(function(){
         //grabbing some data
         var data = $(this);
@@ -29,10 +29,22 @@ app.get('/scrape', function(req, res){
         title = data.children().first().text();
 
         //found the release location on the page
-        release = data.children().last
+        release = data.children().last().children().text();
 
         //sending our info to our variables
         json.title = title;
+        json.release = release;
+      })
+
+      //locating the rating and sending it to cheerio
+      $('.star-box-giga-star').filter(function(){
+        var data = $(this);
+
+        //found the rating location on the page (hint: it's seperate from the other info);
+        rating = data.text();
+
+        //sending it to our release variable
+        json.rating = rating;
       })
     }
   })
