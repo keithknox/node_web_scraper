@@ -6,13 +6,13 @@ var cheerio = require("cheerio");
 var app = express();
 
 //scraper function
-app.get('/scrape', function(req, res){
+app.get('/web-scrape', function(req, res){
 
   //setting url to scrape from
-  url = 'http://www.imdb.com/title/tt1229340/';
+  url = 'http://www.imdb.com/title/tt1219827/';
   //making request from url
-  request(url function(err, res, html){
-    if(!error){
+  request(url, function(err, res, html){
+    if(!err){
       //using cheerio to parse the html returned from the page
       var $ = cheerio.load(html);
 
@@ -21,15 +21,15 @@ app.get('/scrape', function(req, res){
       var json = { title: "", release: "", rating: "" };
 
       //locating title and release and sending it to cheerio
-      $('.header').filter(function(){
+      $('.title_wrapper').filter(function() {
         //grabbing some data
         var data = $(this);
 
         //found the title location on the page
-        title = data.children().first().text();
+        title = data.children().first().text().trim();
 
         //found the release location on the page
-        release = data.children().last().children().text();
+        release = data.children().last().children().last().text().trim();
 
         //sending our info to our variables
         json.title = title;
@@ -37,11 +37,11 @@ app.get('/scrape', function(req, res){
       })
 
       //locating the rating and sending it to cheerio
-      $('.star-box-giga-star').filter(function(){
+      $('.ratingValue').filter(function() {
         var data = $(this);
 
         //found the rating location on the page (hint: it's seperate from the other info);
-        rating = data.text();
+        rating = data.children().first().children().first().text();
 
         //sending it to our release variable
         json.rating = rating;
@@ -50,16 +50,22 @@ app.get('/scrape', function(req, res){
 
     //let's write this stuff down and go home!
     fs.writeFile('output.json', JSON.stringify(json, null, 4), function(err){
-      console.log("File successfully written. It's located in the project folder.");
+      if(err) throw err;
+      console.log(json);
+      console.log("File successfully written. It's located in the output.json file.");
     })
-    res.send('Sorry..no UI. This is just a console app.')
   });
 
 })
 
 //port declaration
-app.listen('8081');
+app.listen('5000');
 //port confirmation
-console.log('Server is now up and running on port:8081.');
+console.log('Server is now up and running. Go to http://localhost:5000/web-scrape and see the results');
 
 exports = module.exports = app;
+
+
+//thanks to the following article: https://scotch.io/tutorials/scraping-the-web-with-node-js
+
+//to start it up, use "node server.js"
