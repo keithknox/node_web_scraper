@@ -1,4 +1,4 @@
-//set reuirements
+//set requirements
 var express = require("express");
 var fs = require("fs");
 var request = require("request");
