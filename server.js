@@ -61,7 +61,7 @@ app.get('/web-scrape', function(req, res){
 //port declaration
 app.listen('5000');
 //port confirmation
-console.log('Server is now up and running. Go to http://localhost:5000/web-scrape and see the results');
+console.log('Server is now up and running on localhost:5000');
 
 exports = module.exports = app;
 
