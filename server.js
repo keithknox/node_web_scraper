@@ -47,7 +47,13 @@ app.get('/scrape', function(req, res){
         json.rating = rating;
       })
     }
-  })
+
+    //let's write this stuff down and go home!
+    fs.writeFile('output.json', JSON.stringify(json, null, 4), function(err){
+      console.log("File successfully written. It's located in the project folder.");
+    })
+    res.send('Sorry..no UI. This is just a console app.')
+  });
 
 })
 
