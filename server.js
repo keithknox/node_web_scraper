@@ -19,6 +19,16 @@ app.get('/scrape', function(req, res){
       //setting variables to target
       var title, release, rating;
       var json = { title: "", release: "", rating: "" };
+
+      //locating the header for the title and sending it to cheerio
+      $('.header').filter(function(){
+        //grabbing some data
+        var data = $(this);
+        //found the title location
+        title = data.children().first().text();
+        //sending it over to our title variable
+        json.title = title;
+      })
     }
   })
 
