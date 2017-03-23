@@ -8,8 +8,17 @@ var app = express();
 //scraper function
 app.get('/web-scrape', function(req, res){
 
-  //setting url to scrape from
-  url = 'http://www.imdb.com/title/tt1219827/';
+  //generating random id numbers
+    function getRandomId(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    num = getRandomId(100000, 999999);
+
+  // //setting url to scrape from
+  url = 'http://www.imdb.com/title/tt' + num + '/';
+
   //making request from url
   request(url, function(err, res, html){
     if(!err){
@@ -17,8 +26,12 @@ app.get('/web-scrape', function(req, res){
       var $ = cheerio.load(html);
 
       //setting variables to target
-      var title, release, rating;
-      var json = { title: "", release: "", rating: "" };
+      var id, title, release, rating;
+      var json = { id: "", title: "", release: "", rating: "" };
+
+      //just wanted to see which id we're hitting since some come up blank.
+      var id = num;
+      json.id = id;
 
       //locating title and release and sending it to cheerio
       $('.title_wrapper').filter(function() {
@@ -56,12 +69,13 @@ app.get('/web-scrape', function(req, res){
     })
   });
 
+
 })
 
 //port declaration
 app.listen('5000');
 //port confirmation
-console.log('Server is now up and running on localhost:5000');
+console.log('Server is now up and running on http://localhost:5000/web-scrape');
 
 exports = module.exports = app;
 
